@@ -33,7 +33,7 @@ func main() {
 	}
 
 	for _, node := range parsed {
-		el, err := thiy.TranslateItem(node)
+		el, err := lib.TranslateItem(node)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error converting: %v\n", err)
 			os.Exit(1)

@@ -1,63 +1,10 @@
-package thiy
+package lib
 
 import (
-	"bytes"
 	"fmt"
 	"regexp"
 	"strings"
 )
-
-type Attribute struct {
-	Name  string
-	Value string
-}
-
-type Element struct {
-	Tag        string
-	Id         string
-	Classes    []string
-	Attributes []Attribute
-	Content    []Node
-}
-
-func (n Element) String() string {
-	var buf bytes.Buffer
-
-	buf.WriteString(fmt.Sprintf("<%s", n.Tag))
-
-	if n.Id != "" {
-		buf.WriteString(fmt.Sprintf(" id=\"%s\"", n.Id))
-	}
-
-	if n.Classes != nil || len(n.Classes) > 0 {
-		buf.WriteString(fmt.Sprintf(" class=\"%s\"", strings.Join(n.Classes, " ")))
-	}
-
-	if n.Attributes != nil || len(n.Attributes) > 0 {
-		for _, attr := range n.Attributes {
-			buf.WriteString(fmt.Sprintf(" %s=\"%s\"", attr.Name, attr.Value))
-		}
-	}
-
-	if n.Content == nil || len(n.Content) == 0 {
-		buf.WriteString(" />")
-		return buf.String()
-	}
-
-	buf.WriteString(">")
-
-	for i, child := range n.Content {
-		buf.WriteString(child.String())
-
-		if i < len(n.Content)-1 {
-			buf.WriteString(" ")
-		}
-	}
-
-	buf.WriteString(fmt.Sprintf("</%s>", n.Tag))
-
-	return buf.String()
-}
 
 const spaceReText = `\s+`
 const attributeReText = `^(?P<name>\w+)(?:=(?:(?P<value>\w+)|\"(?P<qvalue>[^"]*)\"))?`

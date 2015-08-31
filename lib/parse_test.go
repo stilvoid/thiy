@@ -1,4 +1,4 @@
-package thiy
+package lib
 
 import (
 	"reflect"

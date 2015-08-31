@@ -1,4 +1,4 @@
-package thiy
+package lib
 
 import (
 	"reflect"
@@ -15,6 +15,11 @@ func TestTranslate(t *testing.T) {
 		{"div", yaml.MapSlice{
 			{"p.win", "First"},
 			{"p.lose", "Second"},
+		}},
+		{"p", []interface{}{
+			"Hello",
+			yaml.MapItem{"strong", "big"},
+			"world",
 		}},
 	}
 
@@ -52,10 +57,21 @@ func TestTranslate(t *testing.T) {
 				},
 			},
 		},
+		Element{
+			Tag: "p",
+			Content: []Node{
+				TextNode{"Hello"},
+				Element{
+					Tag:     "strong",
+					Content: []Node{TextNode{"big"}},
+				},
+				TextNode{"world"},
+			},
+		},
 	}
 
 	for i, input := range inputs {
-		actual, err := translateItem(input)
+		actual, err := TranslateItem(input)
 
 		if err != nil {
 			t.Errorf("unexpected error: %v", err)

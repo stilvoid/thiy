@@ -1,22 +1,10 @@
-package thiy
+package lib
 
 import (
 	"fmt"
 
 	"gopkg.in/yaml.v2"
 )
-
-type Node interface {
-	String() string
-}
-
-type TextNode struct {
-	Content string
-}
-
-func (n TextNode) String() string {
-	return n.Content
-}
 
 func TranslateItem(in yaml.MapItem) (Node, error) {
 	key, ok := in.Key.(string)
