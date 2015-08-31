@@ -18,7 +18,7 @@ func (n TextNode) String() string {
 	return n.Content
 }
 
-func translateItem(in yaml.MapItem) (Node, error) {
+func TranslateItem(in yaml.MapItem) (Node, error) {
 	key, ok := in.Key.(string)
 
 	if !ok {
@@ -32,12 +32,13 @@ func translateItem(in yaml.MapItem) (Node, error) {
 	}
 
 	switch v := in.Value.(type) {
+	case nil:
 	case string:
 		el.Content = []Node{
 			TextNode{v},
 		}
 	case yaml.MapItem:
-		child, err := translateItem(v)
+		child, err := TranslateItem(v)
 
 		if err != nil {
 			return nil, err
@@ -48,7 +49,25 @@ func translateItem(in yaml.MapItem) (Node, error) {
 		el.Content = make([]Node, 0)
 
 		for _, item := range v {
-			child, err := translateItem(item)
+			child, err := TranslateItem(item)
+
+			if err != nil {
+				return nil, err
+			}
+
+			el.Content = append(el.Content, child)
+		}
+	case []interface{}:
+		el.Content = make([]Node, 0)
+
+		for _, item := range v {
+			mapItem, ok := item.(yaml.MapItem)
+			if !ok {
+				el.Content = append(el.Content, TextNode{fmt.Sprint(item)})
+				continue
+			}
+
+			child, err := TranslateItem(mapItem)
 
 			if err != nil {
 				return nil, err
@@ -57,7 +76,7 @@ func translateItem(in yaml.MapItem) (Node, error) {
 			el.Content = append(el.Content, child)
 		}
 	default:
-		return nil, fmt.Errorf("Badly formatted content")
+		return nil, fmt.Errorf("Badly formatted content: %#v", v)
 	}
 
 	return el, nil
