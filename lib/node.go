@@ -6,32 +6,32 @@ import (
 	"strings"
 )
 
-type Node interface {
+type node interface {
 	String() string
 }
 
-type TextNode struct {
+type textNode struct {
 	Content string
 }
 
-type Attribute struct {
+type attribute struct {
 	Name  string
 	Value string
 }
 
-type Element struct {
+type element struct {
 	Tag        string
 	Id         string
 	Classes    []string
-	Attributes []Attribute
-	Content    []Node
+	Attributes []attribute
+	Content    []node
 }
 
-func (n TextNode) String() string {
+func (n textNode) String() string {
 	return n.Content
 }
 
-func (n Element) String() string {
+func (n element) String() string {
 	var buf bytes.Buffer
 
 	buf.WriteString(fmt.Sprintf("<%s", n.Tag))

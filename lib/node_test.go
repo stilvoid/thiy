@@ -6,55 +6,55 @@ import (
 )
 
 func TestOutput(t *testing.T) {
-	inputs := []Node{
-		Element{
+	inputs := []node{
+		element{
 			Tag: "div",
 		},
-		Element{
+		element{
 			Tag: "div",
 			Id:  "content",
 		},
-		Element{
+		element{
 			Tag:     "div",
 			Classes: []string{"red", "blue"},
 		},
-		Element{
+		element{
 			Tag:     "div",
 			Id:      "content",
 			Classes: []string{"red", "blue"},
 		},
-		Element{
+		element{
 			Tag:     "div",
 			Id:      "content",
 			Classes: []string{"red", "blue"},
-			Attributes: []Attribute{
+			Attributes: []attribute{
 				{"href", "#"},
 				{"name", "link"},
 			},
 		},
-		TextNode{"Hello, world"},
-		Element{
+		textNode{"Hello, world"},
+		element{
 			Tag:     "p",
-			Content: []Node{TextNode{"Hello, world"}},
+			Content: []node{textNode{"Hello, world"}},
 		},
-		Element{
+		element{
 			Tag: "div",
-			Content: []Node{
-				Element{
+			Content: []node{
+				element{
 					Tag:     "p",
-					Content: []Node{TextNode{"Hello, world"}},
+					Content: []node{textNode{"Hello, world"}},
 				},
 			},
 		},
-		Element{
+		element{
 			Tag: "p",
-			Content: []Node{
-				TextNode{"Goodbye"},
-				Element{
+			Content: []node{
+				textNode{"Goodbye"},
+				element{
 					Tag:     "em",
-					Content: []Node{TextNode{"cruel"}},
+					Content: []node{textNode{"cruel"}},
 				},
-				TextNode{"world"},
+				textNode{"world"},
 			},
 		},
 	}

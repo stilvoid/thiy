@@ -2,13 +2,11 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"offend.me.uk/thiy/lib"
 
 	"github.com/andrew-d/go-termutil"
-	"gopkg.in/yaml.v2"
 )
 
 func main() {
@@ -17,28 +15,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	var err error
+	output, err := lib.Parse(os.Stdin)
 
-	input, err := ioutil.ReadAll(os.Stdin)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error reading input")
+		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 
-	var parsed yaml.MapSlice
-
-	err = yaml.Unmarshal(input, &parsed)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error parsing yaml: %v\n", err)
-	}
-
-	for _, node := range parsed {
-		el, err := lib.TranslateItem(node)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error converting: %v\n", err)
-			os.Exit(1)
-		}
-
-		fmt.Println(el.String())
-	}
+	fmt.Println("<!DOCTYPE html>")
+	fmt.Println("<html>")
+	fmt.Println(output)
+	fmt.Println("</html>")
 }

@@ -18,60 +18,60 @@ func TestTranslate(t *testing.T) {
 		}},
 		{"p", []interface{}{
 			"Hello",
-			yaml.MapItem{"strong", "big"},
+			yaml.MapSlice{yaml.MapItem{"strong", "big"}},
 			"world",
 		}},
 	}
 
-	expecteds := []Node{
-		Element{
+	expecteds := []node{
+		element{
 			Tag:     "h1",
-			Content: []Node{TextNode{"Hello, world"}},
+			Content: []node{textNode{"Hello, world"}},
 		},
-		Element{
+		element{
 			Tag:     "div",
 			Id:      "content",
-			Content: []Node{TextNode{"some content"}},
+			Content: []node{textNode{"some content"}},
 		},
-		Element{
+		element{
 			Tag: "div",
-			Content: []Node{
-				Element{
+			Content: []node{
+				element{
 					Tag:     "p",
-					Content: []Node{TextNode{"Hello?"}},
+					Content: []node{textNode{"Hello?"}},
 				},
 			},
 		},
-		Element{
+		element{
 			Tag: "div",
-			Content: []Node{
-				Element{
+			Content: []node{
+				element{
 					Tag:     "p",
 					Classes: []string{"win"},
-					Content: []Node{TextNode{"First"}},
+					Content: []node{textNode{"First"}},
 				},
-				Element{
+				element{
 					Tag:     "p",
 					Classes: []string{"lose"},
-					Content: []Node{TextNode{"Second"}},
+					Content: []node{textNode{"Second"}},
 				},
 			},
 		},
-		Element{
+		element{
 			Tag: "p",
-			Content: []Node{
-				TextNode{"Hello"},
-				Element{
+			Content: []node{
+				textNode{"Hello"},
+				element{
 					Tag:     "strong",
-					Content: []Node{TextNode{"big"}},
+					Content: []node{textNode{"big"}},
 				},
-				TextNode{"world"},
+				textNode{"world"},
 			},
 		},
 	}
 
 	for i, input := range inputs {
-		actual, err := TranslateItem(input)
+		actual, err := translateItem(input)
 
 		if err != nil {
 			t.Errorf("unexpected error: %v", err)
