@@ -12,7 +12,7 @@ func TestParse(t *testing.T) {
 	}
 
 	for input, expected := range cases {
-		actual, err := Parse(strings.NewReader(input))
+		actual, err := Parse(strings.NewReader(input), "html")
 
 		if err != nil {
 			t.Errorf("unexpected error: %v", err)

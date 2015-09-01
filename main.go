@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -56,15 +57,19 @@ Result:
 func main() {
 	var r io.Reader
 
-	if len(os.Args) < 2 || os.Args[1] == "-" {
-		if len(os.Args) < 2 && termutil.Isatty(os.Stdin.Fd()) {
+	dialect := flag.String("d", "html", "dialect")
+
+	flag.Parse()
+
+	if flag.NArg() < 1 || flag.Arg(0) == "-" {
+		if flag.NArg() < 1 && termutil.Isatty(os.Stdin.Fd()) {
 			printHelp()
 			os.Exit(1)
 		}
 
 		r = os.Stdin
 	} else {
-		file, err := os.Open(os.Args[1])
+		file, err := os.Open(flag.Arg(0))
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -73,7 +78,7 @@ func main() {
 		r = file
 	}
 
-	output, err := lib.Parse(r)
+	output, err := lib.Parse(r, *dialect)
 
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)

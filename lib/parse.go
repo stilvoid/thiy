@@ -6,11 +6,12 @@ import (
 	"io/ioutil"
 
 	"offend.me.uk/thiy/common"
+	"offend.me.uk/thiy/dialect"
 
 	"gopkg.in/yaml.v2"
 )
 
-func Parse(r io.Reader) (string, error) {
+func Parse(r io.Reader, dialectName string) (string, error) {
 	input, err := ioutil.ReadAll(r)
 	if err != nil {
 		return "", err
@@ -29,6 +30,10 @@ func Parse(r io.Reader) (string, error) {
 		el, err := translateItem(node)
 		if err != nil {
 			return "", err
+		}
+
+		if dialectName == "bootstrap" {
+			el = dialect.Bootstrap(el.(common.TagNode))
 		}
 
 		buf.WriteString(el.String())
