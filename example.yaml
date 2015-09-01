@@ -3,11 +3,16 @@ head:
     title: Hello, world
     style: |
         body {
+            background: #333;
             color: #fff;
         }
 
         #content {
             border: 1px inset #999;
+        }
+
+        a {
+            color: #acf;
         }
 body:
     h1: Hello, world
