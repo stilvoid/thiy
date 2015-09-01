@@ -8,6 +8,7 @@ import (
 
 type Node interface {
 	String() string
+	render(int) string
 }
 
 type TextNode struct {
@@ -27,12 +28,30 @@ type TagNode struct {
 	Content    []Node
 }
 
-func (n TextNode) String() string {
-	return n.Content
+const INDENT = "    "
+
+func (n TextNode) render(indent int) string {
+	var buf bytes.Buffer
+
+	indentString := strings.Repeat(INDENT, indent)
+
+	buf.WriteString(indentString)
+
+	buf.WriteString(strings.Replace(n.Content, "\n", "\n"+indentString, -1))
+
+	return buf.String()
 }
 
-func (n TagNode) String() string {
+func (n TextNode) String() string {
+	return n.render(0)
+}
+
+func (n TagNode) render(indent int) string {
 	var buf bytes.Buffer
+
+	indentString := strings.Repeat(INDENT, indent)
+
+	buf.WriteString(indentString)
 
 	buf.WriteString(fmt.Sprintf("<%s", n.Tag))
 
@@ -61,15 +80,40 @@ func (n TagNode) String() string {
 
 	buf.WriteString(">")
 
-	for i, child := range n.Content {
-		buf.WriteString(child.String())
+	if len(n.Content) == 1 {
+		switch node := n.Content[0].(type) {
+		case TagNode:
+			buf.WriteString("\n")
+			buf.WriteString(node.render(indent + 1))
+			buf.WriteString("\n")
 
-		if i < len(n.Content)-1 {
-			buf.WriteString(" ")
+			buf.WriteString(indentString)
+		case TextNode:
+			if strings.ContainsRune(node.Content, '\n') {
+				buf.WriteString("\n")
+				buf.WriteString(node.render(indent + 1))
+				buf.WriteString("\n")
+
+				buf.WriteString(indentString)
+			} else {
+				buf.WriteString(node.String())
+			}
 		}
+	} else {
+		for _, child := range n.Content {
+			buf.WriteString("\n")
+			buf.WriteString(child.render(indent + 1))
+		}
+
+		buf.WriteString("\n")
+		buf.WriteString(indentString)
 	}
 
 	buf.WriteString(fmt.Sprintf("</%s>", n.Tag))
 
 	return buf.String()
+}
+
+func (n TagNode) String() string {
+	return n.render(0)
 }

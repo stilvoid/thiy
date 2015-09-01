@@ -33,9 +33,14 @@ func TestOutput(t *testing.T) {
 			},
 		},
 		TextNode{"Hello, world"},
+		TextNode{"Hello\nworld"},
 		TagNode{
 			Tag:     "p",
 			Content: []Node{TextNode{"Hello, world"}},
+		},
+		TagNode{
+			Tag:     "p",
+			Content: []Node{TextNode{"Hello\nworld"}},
 		},
 		TagNode{
 			Tag: "div",
@@ -75,9 +80,11 @@ func TestOutput(t *testing.T) {
 		"<div id=\"content\" class=\"red blue\" />",
 		"<div id=\"content\" class=\"red blue\" href=\"#\" name=\"link\" />",
 		"Hello, world",
+		"Hello\nworld",
 		"<p>Hello, world</p>",
-		"<div><p>Hello, world</p></div>",
-		"<p>Goodbye <em>cruel</em> world</p>",
+		"<p>\n    Hello\n    world\n</p>",
+		"<div>\n    <p>Hello, world</p>\n</div>",
+		"<p>\n    Goodbye\n    <em>cruel</em>\n    world\n</p>",
 		"<p empty>Hello, world</p>",
 	}
 

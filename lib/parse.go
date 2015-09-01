@@ -1,14 +1,13 @@
 package lib
 
 import (
-	"bytes"
 	"io"
 	"io/ioutil"
-
-	"offend.me.uk/thiy/common"
-	"offend.me.uk/thiy/dialect"
+	"strings"
 
 	"gopkg.in/yaml.v2"
+	"offend.me.uk/thiy/common"
+	"offend.me.uk/thiy/dialect"
 )
 
 func Parse(r io.Reader, dialectName string) (string, error) {
@@ -24,7 +23,7 @@ func Parse(r io.Reader, dialectName string) (string, error) {
 		return "", err
 	}
 
-	var buf bytes.Buffer
+	var out []string
 
 	for _, node := range parsed {
 		el, err := translateItem(node)
@@ -36,8 +35,8 @@ func Parse(r io.Reader, dialectName string) (string, error) {
 			el = dialect.Bootstrap(el.(common.TagNode))
 		}
 
-		buf.WriteString(el.String())
+		out = append(out, el.String())
 	}
 
-	return buf.String(), nil
+	return strings.Join(out, "\n"), nil
 }

@@ -57,7 +57,7 @@ Result:
 func main() {
 	var r io.Reader
 
-	dialect := flag.String("d", "html", "dialect")
+	dialect := flag.String("d", "raw", "dialect")
 
 	flag.Parse()
 
