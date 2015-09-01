@@ -4,6 +4,8 @@ import (
 	"reflect"
 	"testing"
 
+	"offend.me.uk/thiy/common"
+
 	"gopkg.in/yaml.v2"
 )
 
@@ -23,49 +25,49 @@ func TestTranslate(t *testing.T) {
 		}},
 	}
 
-	expecteds := []node{
-		element{
+	expecteds := []common.Node{
+		common.TagNode{
 			Tag:     "h1",
-			Content: []node{textNode{"Hello, world"}},
+			Content: []common.Node{common.TextNode{"Hello, world"}},
 		},
-		element{
+		common.TagNode{
 			Tag:     "div",
 			Id:      "content",
-			Content: []node{textNode{"some content"}},
+			Content: []common.Node{common.TextNode{"some content"}},
 		},
-		element{
+		common.TagNode{
 			Tag: "div",
-			Content: []node{
-				element{
+			Content: []common.Node{
+				common.TagNode{
 					Tag:     "p",
-					Content: []node{textNode{"Hello?"}},
+					Content: []common.Node{common.TextNode{"Hello?"}},
 				},
 			},
 		},
-		element{
+		common.TagNode{
 			Tag: "div",
-			Content: []node{
-				element{
+			Content: []common.Node{
+				common.TagNode{
 					Tag:     "p",
 					Classes: []string{"win"},
-					Content: []node{textNode{"First"}},
+					Content: []common.Node{common.TextNode{"First"}},
 				},
-				element{
+				common.TagNode{
 					Tag:     "p",
 					Classes: []string{"lose"},
-					Content: []node{textNode{"Second"}},
+					Content: []common.Node{common.TextNode{"Second"}},
 				},
 			},
 		},
-		element{
+		common.TagNode{
 			Tag: "p",
-			Content: []node{
-				textNode{"Hello"},
-				element{
+			Content: []common.Node{
+				common.TextNode{"Hello"},
+				common.TagNode{
 					Tag:     "strong",
-					Content: []node{textNode{"big"}},
+					Content: []common.Node{common.TextNode{"big"}},
 				},
-				textNode{"world"},
+				common.TextNode{"world"},
 			},
 		},
 	}

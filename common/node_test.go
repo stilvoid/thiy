@@ -1,4 +1,4 @@
-package lib
+package common
 
 import (
 	"reflect"
@@ -6,55 +6,64 @@ import (
 )
 
 func TestOutput(t *testing.T) {
-	inputs := []node{
-		element{
+	inputs := []Node{
+		TagNode{
 			Tag: "div",
 		},
-		element{
+		TagNode{
 			Tag: "div",
 			Id:  "content",
 		},
-		element{
+		TagNode{
 			Tag:     "div",
 			Classes: []string{"red", "blue"},
 		},
-		element{
+		TagNode{
 			Tag:     "div",
 			Id:      "content",
 			Classes: []string{"red", "blue"},
 		},
-		element{
+		TagNode{
 			Tag:     "div",
 			Id:      "content",
 			Classes: []string{"red", "blue"},
-			Attributes: []attribute{
+			Attributes: []Attribute{
 				{"href", "#"},
 				{"name", "link"},
 			},
 		},
-		textNode{"Hello, world"},
-		element{
+		TextNode{"Hello, world"},
+		TagNode{
 			Tag:     "p",
-			Content: []node{textNode{"Hello, world"}},
+			Content: []Node{TextNode{"Hello, world"}},
 		},
-		element{
+		TagNode{
 			Tag: "div",
-			Content: []node{
-				element{
+			Content: []Node{
+				TagNode{
 					Tag:     "p",
-					Content: []node{textNode{"Hello, world"}},
+					Content: []Node{TextNode{"Hello, world"}},
 				},
 			},
 		},
-		element{
+		TagNode{
 			Tag: "p",
-			Content: []node{
-				textNode{"Goodbye"},
-				element{
+			Content: []Node{
+				TextNode{"Goodbye"},
+				TagNode{
 					Tag:     "em",
-					Content: []node{textNode{"cruel"}},
+					Content: []Node{TextNode{"cruel"}},
 				},
-				textNode{"world"},
+				TextNode{"world"},
+			},
+		},
+		TagNode{
+			Tag: "p",
+			Attributes: []Attribute{
+				{"empty", ""},
+			},
+			Content: []Node{
+				TextNode{"Hello, world"},
 			},
 		},
 	}
@@ -69,6 +78,7 @@ func TestOutput(t *testing.T) {
 		"<p>Hello, world</p>",
 		"<div><p>Hello, world</p></div>",
 		"<p>Goodbye <em>cruel</em> world</p>",
+		"<p empty>Hello, world</p>",
 	}
 
 	for i, input := range inputs {

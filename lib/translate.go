@@ -3,21 +3,23 @@ package lib
 import (
 	"fmt"
 
+	"offend.me.uk/thiy/common"
+
 	"gopkg.in/yaml.v2"
 )
 
-func translateValue(in interface{}) ([]node, error) {
+func translateValue(in interface{}) ([]common.Node, error) {
 	switch v := in.(type) {
 	case nil:
-		return []node{}, nil
+		return []common.Node{}, nil
 	case string:
-		return []node{textNode{v}}, nil
+		return []common.Node{common.TextNode{v}}, nil
 	case yaml.MapItem:
 		child, err := translateItem(v)
 
-		return []node{child}, err
+		return []common.Node{child}, err
 	case yaml.MapSlice:
-		out := make([]node, len(v))
+		out := make([]common.Node, len(v))
 
 		for i, item := range v {
 			child, err := translateItem(item)
@@ -31,7 +33,7 @@ func translateValue(in interface{}) ([]node, error) {
 
 		return out, nil
 	case []interface{}:
-		out := make([]node, 0, len(v))
+		out := make([]common.Node, 0, len(v))
 
 		for _, item := range v {
 			child, err := translateValue(item)
@@ -49,7 +51,7 @@ func translateValue(in interface{}) ([]node, error) {
 	return nil, fmt.Errorf("Badly formatted content: %#v", in)
 }
 
-func translateItem(in yaml.MapItem) (node, error) {
+func translateItem(in yaml.MapItem) (common.Node, error) {
 	key, ok := in.Key.(string)
 
 	if !ok {

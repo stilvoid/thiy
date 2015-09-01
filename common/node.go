@@ -1,4 +1,4 @@
-package lib
+package common
 
 import (
 	"bytes"
@@ -6,32 +6,32 @@ import (
 	"strings"
 )
 
-type node interface {
+type Node interface {
 	String() string
 }
 
-type textNode struct {
+type TextNode struct {
 	Content string
 }
 
-type attribute struct {
+type Attribute struct {
 	Name  string
 	Value string
 }
 
-type element struct {
+type TagNode struct {
 	Tag        string
 	Id         string
 	Classes    []string
-	Attributes []attribute
-	Content    []node
+	Attributes []Attribute
+	Content    []Node
 }
 
-func (n textNode) String() string {
+func (n TextNode) String() string {
 	return n.Content
 }
 
-func (n element) String() string {
+func (n TagNode) String() string {
 	var buf bytes.Buffer
 
 	buf.WriteString(fmt.Sprintf("<%s", n.Tag))
@@ -46,7 +46,11 @@ func (n element) String() string {
 
 	if n.Attributes != nil || len(n.Attributes) > 0 {
 		for _, attr := range n.Attributes {
-			buf.WriteString(fmt.Sprintf(" %s=\"%s\"", attr.Name, attr.Value))
+			if attr.Value == "" {
+				buf.WriteString(fmt.Sprintf(" %s", attr.Name))
+			} else {
+				buf.WriteString(fmt.Sprintf(" %s=\"%s\"", attr.Name, attr.Value))
+			}
 		}
 	}
 

@@ -5,9 +5,8 @@ import (
 	"io"
 	"os"
 
-	"offend.me.uk/thiy/lib"
-
 	"github.com/andrew-d/go-termutil"
+	"offend.me.uk/thiy/lib"
 )
 
 func printHelp() {

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+
+	"offend.me.uk/thiy/common"
 )
 
 const spaceReText = `\s+`
@@ -26,8 +28,8 @@ func init() {
 	elementNames = elementRe.SubexpNames()
 }
 
-func parseAttributes(input string) ([]attribute, error) {
-	attributes := make([]attribute, 0)
+func parseAttributes(input string) ([]common.Attribute, error) {
+	attributes := make([]common.Attribute, 0)
 
 	for len(input) > 0 {
 		match := attributeRe.FindStringSubmatch(input)
@@ -36,20 +38,20 @@ func parseAttributes(input string) ([]attribute, error) {
 			return nil, fmt.Errorf("Badly-formatted attribute: %v", input)
 		}
 
-		var attribute attribute
+		var attr common.Attribute
 
 		for i, name := range attributeNames {
 			switch name {
 			case "name":
-				attribute.Name = match[i]
+				attr.Name = match[i]
 			case "value", "qvalue":
 				if match[i] != "" {
-					attribute.Value = match[i]
+					attr.Value = match[i]
 				}
 			}
 		}
 
-		attributes = append(attributes, attribute)
+		attributes = append(attributes, attr)
 
 		input = input[len(match[0]):]
 
@@ -59,8 +61,8 @@ func parseAttributes(input string) ([]attribute, error) {
 	return attributes, nil
 }
 
-func newElement(input string) (element, error) {
-	var el element
+func newElement(input string) (common.TagNode, error) {
+	var el common.TagNode
 
 	match := elementRe.FindStringSubmatch(input)
 

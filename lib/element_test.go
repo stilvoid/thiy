@@ -3,10 +3,12 @@ package lib
 import (
 	"reflect"
 	"testing"
+
+	"offend.me.uk/thiy/common"
 )
 
 func TestAttributes(t *testing.T) {
-	cases := map[string][]attribute{
+	cases := map[string][]common.Attribute{
 		"cake":                  {{Name: "cake", Value: ""}},
 		"cake=lemon":            {{Name: "cake", Value: "lemon"}},
 		"cake=\"longer thing\"": {{Name: "cake", Value: "longer thing"}},
@@ -38,7 +40,7 @@ func TestAttributes(t *testing.T) {
 }
 
 func TestNewElement(t *testing.T) {
-	cases := map[string]element{
+	cases := map[string]common.TagNode{
 		"div": {
 			Tag: "div",
 		},
@@ -61,21 +63,21 @@ func TestNewElement(t *testing.T) {
 		},
 		"div(foo=bar)": {
 			Tag: "div",
-			Attributes: []attribute{
+			Attributes: []common.Attribute{
 				{"foo", "bar"},
 			},
 		},
 		"div#content(foo=bar)": {
 			Tag: "div",
 			Id:  "content",
-			Attributes: []attribute{
+			Attributes: []common.Attribute{
 				{"foo", "bar"},
 			},
 		},
 		"div.blue green(foo=bar)": {
 			Tag:     "div",
 			Classes: []string{"blue", "green"},
-			Attributes: []attribute{
+			Attributes: []common.Attribute{
 				{"foo", "bar"},
 			},
 		},
@@ -83,7 +85,7 @@ func TestNewElement(t *testing.T) {
 			Tag:     "div",
 			Id:      "content",
 			Classes: []string{"blue", "green"},
-			Attributes: []attribute{
+			Attributes: []common.Attribute{
 				{"foo", "bar baz"},
 			},
 		},
