@@ -11,6 +11,9 @@ func TestOutput(t *testing.T) {
 			Tag: "div",
 		},
 		TagNode{
+			Tag: "br",
+		},
+		TagNode{
 			Tag: "div",
 			Id:  "content",
 		},
@@ -74,11 +77,12 @@ func TestOutput(t *testing.T) {
 	}
 
 	expecteds := []string{
-		"<div />",
-		"<div id=\"content\" />",
-		"<div class=\"red blue\" />",
-		"<div id=\"content\" class=\"red blue\" />",
-		"<div id=\"content\" class=\"red blue\" href=\"#\" name=\"link\" />",
+		"<div></div>",
+		"<br />",
+		"<div id=\"content\"></div>",
+		"<div class=\"red blue\"></div>",
+		"<div id=\"content\" class=\"red blue\"></div>",
+		"<div id=\"content\" class=\"red blue\" href=\"#\" name=\"link\"></div>",
 		"Hello, world",
 		"Hello\nworld",
 		"<p>Hello, world</p>",

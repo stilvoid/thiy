@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+var voidElements = []string{"area", "base", "br", "col", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr"}
+
 type Node interface {
 	String() string
 	render(int) string
@@ -74,7 +76,14 @@ func (n TagNode) render(indent int) string {
 	}
 
 	if n.Content == nil || len(n.Content) == 0 {
-		buf.WriteString(" />")
+		for _, tag := range voidElements {
+			if n.Tag == tag {
+				buf.WriteString(" />")
+				return buf.String()
+			}
+		}
+
+		buf.WriteString("></" + n.Tag + ">")
 		return buf.String()
 	}
 
