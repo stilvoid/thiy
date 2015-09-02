@@ -65,6 +65,22 @@ func TestBootstrap(t *testing.T) {
 				common.TextNode{"Some text"},
 			},
 		},
+		{
+			Tag: "row",
+		},
+		{
+			Tag: "col",
+			Attributes: []common.Attribute{
+				{"md", "3"},
+				{"xs", "6"},
+			},
+		},
+		{
+			Tag: "icon",
+			Content: []common.Node{
+				common.TextNode{"piggy-bank"},
+			},
+		},
 	}
 
 	expecteds := []common.TagNode{
@@ -186,6 +202,18 @@ func TestBootstrap(t *testing.T) {
 					},
 				},
 			},
+		},
+		{
+			Tag:     "div",
+			Classes: []string{"row"},
+		},
+		{
+			Tag:     "div",
+			Classes: []string{"col-md-3", "col-xs-6"},
+		},
+		{
+			Tag:     "span",
+			Classes: []string{"glyphicon", "glyphicon-piggy-bank"},
 		},
 	}
 

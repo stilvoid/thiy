@@ -2,6 +2,8 @@ package dialect
 
 import "offend.me.uk/thiy/common"
 
+var bsSizes = []string{"xs", "sm", "md", "lg"}
+
 func translateNodes(in []common.Node) []common.Node {
 	var out []common.Node
 
@@ -111,6 +113,71 @@ func makeFormControl(in common.TagNode) (out common.TagNode) {
 	return
 }
 
+func makeRow(in common.TagNode) common.TagNode {
+	if in.Tag != "row" {
+		panic("attempt to make a bootstrap row out of a non-row")
+	}
+
+	in.Tag = "div"
+
+	in.Classes = append(in.Classes, "row")
+
+	return in
+}
+
+func makeCol(in common.TagNode) common.TagNode {
+	if in.Tag != "col" {
+		panic("attempt to make a bootstrap col out of a non-col")
+	}
+
+	in.Tag = "div"
+
+	var attrs []common.Attribute
+
+	for _, attr := range in.Attributes {
+		include := true
+
+		for _, size := range bsSizes {
+			if attr.Name == size {
+				in.Classes = append(in.Classes, "col-"+attr.Name+"-"+attr.Value)
+				include = false
+			}
+		}
+
+		if include {
+			attrs = append(attrs, attr)
+		}
+	}
+
+	in.Attributes = attrs
+
+	return in
+}
+
+func makeIcon(in common.TagNode) common.TagNode {
+	if in.Tag != "icon" {
+		panic("attempt to make a bootstrap icon out of a non-icon")
+	}
+
+	if len(in.Content) != 1 {
+		panic("bootstrap icon requires an icon name")
+	}
+
+	textNode, ok := in.Content[0].(common.TextNode)
+
+	if !ok {
+		panic("bootstrap icon requires an icon name")
+	}
+
+	in.Tag = "span"
+
+	in.Classes = append(in.Classes, "glyphicon", "glyphicon-"+textNode.Content)
+
+	in.Content = nil
+
+	return in
+}
+
 func Bootstrap(in common.TagNode) common.TagNode {
 	in.Content = translateNodes(in.Content)
 
@@ -119,6 +186,12 @@ func Bootstrap(in common.TagNode) common.TagNode {
 		return makePanel(in)
 	case "input":
 		return makeFormControl(in)
+	case "row":
+		return makeRow(in)
+	case "col":
+		return makeCol(in)
+	case "icon":
+		return makeIcon(in)
 	default:
 		return in
 	}

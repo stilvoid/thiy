@@ -1,0 +1,33 @@
+head:
+    title: Hello, world
+
+    meta(viewport): width=device-width, initial-scale=1
+
+    # "include" should check the extension and produce the right type
+    include: style.css
+    include: script.js
+
+    script: |
+        console.log("Hello");
+
+    style: |
+        body {
+            background: #333;
+            color: #fff;
+        }
+
+        #content {
+            border: 1px inset #999;
+        }
+
+        a {
+            color: #acf;
+        }
+
+body:
+    h1: Hello, world
+    div#content:
+        p:
+        - I am a
+        - a(href=blue): blue
+        - fish
