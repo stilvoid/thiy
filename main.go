@@ -21,7 +21,9 @@ If DIALECT is set, pre-processing will be performed. See the documentation for d
 
 Available dialects:
 
-	bootstrap
+  html      (default)
+  bootstrap (implies html)
+  raw       (no convenience tags)
 
 The input document should be a map where each element represent an HTML node. The contents of each element should be a string, an array of strings and maps, or another map representing the contents of the HTML node.
 
@@ -63,7 +65,7 @@ Result:
 func main() {
 	var r io.Reader
 
-	dialect := flag.String("d", "raw", "dialect")
+	dialect := flag.String("d", "html", "dialect")
 
 	flag.Parse()
 

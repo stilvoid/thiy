@@ -35,9 +35,10 @@ func Parse(r io.Reader, dialectName string) (string, error) {
 			return "", err
 		}
 
-		if dialectName == "html" {
+		switch dialectName {
+		case "html":
 			el = dialect.HTML(el.(common.TagNode))
-		} else if dialectName == "bootstrap" {
+		case "bootstrap":
 			el = dialect.HTML(el.(common.TagNode))
 			el = dialect.Bootstrap(el.(common.TagNode))
 		}
