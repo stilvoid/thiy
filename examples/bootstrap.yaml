@@ -12,3 +12,7 @@ body:
             - I am a
             - a(href=blue): blue
             - fish
+
+            form:
+                input: Placeholder text
+                input(type=number label="A number!"): "17"

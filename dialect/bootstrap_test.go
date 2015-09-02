@@ -40,6 +40,31 @@ func TestBootstrap(t *testing.T) {
 				},
 			},
 		},
+		{
+			Tag: "input",
+			Content: []common.Node{
+				common.TextNode{"Some text"},
+			},
+		},
+		{
+			Tag: "input",
+			Attributes: []common.Attribute{
+				{"label", "Field label"},
+			},
+			Content: []common.Node{
+				common.TextNode{"Some text"},
+			},
+		},
+		{
+			Tag: "input",
+			Id:  "my-field",
+			Attributes: []common.Attribute{
+				{"label", "Field label"},
+			},
+			Content: []common.Node{
+				common.TextNode{"Some text"},
+			},
+		},
 	}
 
 	expecteds := []common.TagNode{
@@ -101,6 +126,63 @@ func TestBootstrap(t *testing.T) {
 							Tag:     "div",
 							Classes: []string{"panel-body"},
 						},
+					},
+				},
+			},
+		},
+		{
+			Tag:     "div",
+			Classes: []string{"form-group"},
+			Content: []common.Node{
+				common.TagNode{
+					Tag:     "input",
+					Classes: []string{"form-control"},
+					Attributes: []common.Attribute{
+						{"placeholder", "Some text"},
+					},
+				},
+			},
+		},
+		{
+			Tag:     "div",
+			Classes: []string{"form-group"},
+			Content: []common.Node{
+				common.TagNode{
+					Tag:     "label",
+					Classes: []string{"control-label"},
+					Content: []common.Node{
+						common.TextNode{"Field label"},
+					},
+				},
+				common.TagNode{
+					Tag:     "input",
+					Classes: []string{"form-control"},
+					Attributes: []common.Attribute{
+						{"placeholder", "Some text"},
+					},
+				},
+			},
+		},
+		{
+			Tag:     "div",
+			Classes: []string{"form-group"},
+			Content: []common.Node{
+				common.TagNode{
+					Tag: "label",
+					Attributes: []common.Attribute{
+						{"for", "my-field"},
+					},
+					Classes: []string{"control-label"},
+					Content: []common.Node{
+						common.TextNode{"Field label"},
+					},
+				},
+				common.TagNode{
+					Tag:     "input",
+					Id:      "my-field",
+					Classes: []string{"form-control"},
+					Attributes: []common.Attribute{
+						{"placeholder", "Some text"},
 					},
 				},
 			},

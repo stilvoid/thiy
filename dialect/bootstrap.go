@@ -55,12 +55,70 @@ func makePanel(in common.TagNode) (out common.TagNode) {
 	return
 }
 
+func makeFormControl(in common.TagNode) (out common.TagNode) {
+	if in.Tag != "input" {
+		panic("attempt to make a bootstrap from control out of a non-input")
+	}
+
+	out.Tag = "div"
+
+	out.Classes = []string{"form-group"}
+
+	in.Classes = append(in.Classes, "form-control")
+
+	var attrs []common.Attribute
+
+	for _, attr := range in.Attributes {
+		include := true
+
+		if attr.Name == "label" {
+			labelNode := common.TagNode{
+				Tag:     "label",
+				Classes: []string{"control-label"},
+				Content: []common.Node{
+					common.TextNode{attr.Value},
+				},
+			}
+
+			if in.Id != "" {
+				labelNode.Attributes = []common.Attribute{
+					{"for", in.Id},
+				}
+			}
+
+			out.Content = append(out.Content, labelNode)
+
+			include = false
+		}
+
+		if include {
+			attrs = append(attrs, attr)
+		}
+	}
+
+	in.Attributes = attrs
+
+	if len(in.Content) == 1 {
+		if textNode, ok := in.Content[0].(common.TextNode); ok {
+			in.Attributes = append(in.Attributes, common.Attribute{"placeholder", textNode.Content})
+
+			in.Content = nil
+		}
+	}
+
+	out.Content = append(out.Content, in)
+
+	return
+}
+
 func Bootstrap(in common.TagNode) common.TagNode {
 	in.Content = translateNodes(in.Content)
 
 	switch in.Tag {
 	case "panel":
 		return makePanel(in)
+	case "input":
+		return makeFormControl(in)
 	default:
 		return in
 	}
