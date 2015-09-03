@@ -10,7 +10,7 @@ import (
 	"offend.me.uk/thiy/dialect"
 )
 
-func Parse(r io.Reader, dialectName string) (string, error) {
+func Parse(r io.Reader, dialectName string, includeWrapper bool) (string, error) {
 	input, err := ioutil.ReadAll(r)
 	if err != nil {
 		return "", err
@@ -23,11 +23,15 @@ func Parse(r io.Reader, dialectName string) (string, error) {
 		return "", err
 	}
 
-	parsed = yaml.MapSlice{
-		{"html", parsed},
-	}
+	var out []string
 
-	out := []string{"<!DOCTYPE html>"}
+	if includeWrapper {
+		parsed = yaml.MapSlice{
+			{"html", parsed},
+		}
+
+		out = []string{"<!DOCTYPE html>"}
+	}
 
 	for _, node := range parsed {
 		el, err := translateItem(node)

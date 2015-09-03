@@ -10,6 +10,9 @@ Thiy is heavily inspired by [Jade](http://jade-lang.com/).
 
     thiy [-d <DIALECT>] [FILE]
 
+        -n  No wrap. Don't add the <!DOCTYPE html><html></html> surround.
+
+
     Reads FILE as YAML, converts it into HTML, and outputs the result.
 
     If FILE is missing or "-", input will be read from stdin.

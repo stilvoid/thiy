@@ -11,7 +11,10 @@ import (
 )
 
 func printHelp() {
-	fmt.Println(`Usage: thiy [-d <DIALECT>] [FILE]
+	fmt.Println(`Usage: thiy [-n] [-d <DIALECT>] [FILE]
+
+	-n  No wrap. Don't add the <!DOCTYPE html><html></html> surround.
+
 
 Reads FILE as YAML, converts it into HTML, and outputs the result.
 
@@ -66,6 +69,7 @@ func main() {
 	var r io.Reader
 
 	dialect := flag.String("d", "html", "dialect")
+	noWrap := flag.Bool("n", false, "don't include wrapper")
 
 	flag.Parse()
 
@@ -86,7 +90,7 @@ func main() {
 		r = file
 	}
 
-	output, err := lib.Parse(r, *dialect)
+	output, err := lib.Parse(r, *dialect, !*noWrap)
 
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
