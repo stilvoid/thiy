@@ -58,7 +58,7 @@ func makePanel(in common.TagNode) (out common.TagNode) {
 }
 
 func makeFormControl(in common.TagNode) (out common.TagNode) {
-	if in.Tag != "input" {
+	if in.Tag != "input" && in.Tag != "select" {
 		panic("attempt to make a bootstrap from control out of a non-input")
 	}
 
@@ -184,7 +184,7 @@ func Bootstrap(in common.TagNode) common.TagNode {
 	switch in.Tag {
 	case "panel":
 		return makePanel(in)
-	case "input":
+	case "input", "select":
 		return makeFormControl(in)
 	case "row":
 		return makeRow(in)

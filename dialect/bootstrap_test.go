@@ -81,6 +81,9 @@ func TestBootstrap(t *testing.T) {
 				common.TextNode{"piggy-bank"},
 			},
 		},
+		{
+			Tag: "select",
+		},
 	}
 
 	expecteds := []common.TagNode{
@@ -214,6 +217,16 @@ func TestBootstrap(t *testing.T) {
 		{
 			Tag:     "span",
 			Classes: []string{"glyphicon", "glyphicon-piggy-bank"},
+		},
+		{
+			Tag:     "div",
+			Classes: []string{"form-group"},
+			Content: []common.Node{
+				common.TagNode{
+					Tag:     "select",
+					Classes: []string{"form-control"},
+				},
+			},
 		},
 	}
 
